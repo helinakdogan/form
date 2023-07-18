@@ -1,8 +1,16 @@
 .App {
   text-align: center;
+
 }
 
 .text-danger{
   color: salmon;
   font-weight: bold;
 }
+
+.paper{
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+

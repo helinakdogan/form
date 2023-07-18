@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import "./App.css";
+import { Container } from "@mui/material";
 
 function App() {
   const Item = styled(Paper)(({ theme }) => ({
@@ -27,26 +28,26 @@ function App() {
   };
 
   return (
+    <Paper elevation={3} className="paper">
     <form onSubmit={handleSubmit}>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
-          
+
           <Grid item xs={8}>
             <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small-label">Age</InputLabel>
+              <InputLabel id="demo-select-small-label">Gender</InputLabel>
               <Select
                 labelId="demo-select-small-label"
                 id="demo-select-small"
                 value={gender}
-                label="Age"
+                label="Gender"
                 onChange={genderHandler}
               >
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value={10}>Woman</MenuItem>
+                <MenuItem value={20}>Man</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -65,6 +66,7 @@ function App() {
         </Grid>
       </Box>
     </form>
+    </Paper>
   );
 }
 export default App;
