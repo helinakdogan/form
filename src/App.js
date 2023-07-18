@@ -7,10 +7,16 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import TextField from "@mui/material/TextField";
+import { useForm } from "react-hook-form";
+import InputMask from "react-input-mask";
+import { MuiTelInput } from "mui-tel-input";
 import "./App.css";
 import { Container } from "@mui/material";
 
 function App() {
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -20,53 +26,117 @@ function App() {
   }));
   const [gender, setGender] = React.useState("");
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const handleRegistration = (data) => console.log(data);
+  const handleError = (errors) => {};
+
+  const registerOptions = {
+    firstname: { required: "First name is required" },
+    surname: { required: "Surname is required" },
+    gender: { required: "Gender is required" },
+    email: { required: "Email is required" },
+    password: {
+      required: "Password is required",
+      minLength: {
+        value: 8,
+        message: "Password must have at least 8 characters",
+      },
+    },
+  };
+
   const genderHandler = (event) => {
     setGender(event.target.value);
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
+
+  const phoneHandler = (newValue) => {
+    setPhoneNumber(newValue);
   };
 
   return (
-    <Paper elevation={3} className="paper">
-    <form onSubmit={handleSubmit}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
+    <div elevation={3} className="paper">
+      <form onSubmit={handleSubmit}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField
+                label="First Name"
+                size="small"
+                fullWidth
+                variant="outlined"
+                inputProps={{ maxLength: 50 }}
+                {...register("soyad", {
+                  maxLength: {
+                    value: 50,
+                  },
+                })}
+                error={!!errors.soyad}
+                helperText={errors.soyad?.message}
+              ></TextField>
+            </Grid>
 
-          <Grid item xs={8}>
-            <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small-label">Gender</InputLabel>
-              <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
-                value={gender}
-                label="Gender"
-                onChange={genderHandler}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Woman</MenuItem>
-                <MenuItem value={20}>Man</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Surname"
+                size="small"
+                fullWidth
+                variant="outlined"
+                inputProps={{ maxLength: 5 }}
+                {...register("soyad", {
+                  maxLength: {
+                    value: 50,
+                  },
+                })}
+                error={!!errors.soyad}
+                helperText={errors.soyad?.message}
+              ></TextField>
+            </Grid>
 
-          <Grid item xs={4}>
-            <Item>xs=4</Item>
-          </Grid>
+            
 
-          <Grid item xs={4}>
-            <Item>xs=4</Item>
-          </Grid>
+            <Grid item xs={6}>
+              <MuiTelInput
+                label="Phone Number"
+                initialValueFormat="national"
+                defaultCountry="TR"
+                value={phoneNumber}
+                inputProps={{ maxLength: 17 }}
+                {...register("phone", {
+                  maxLength: {
+                    value: 17,
+                  },
+                })}
+                withCountryCallingCode
+                onChange={phoneHandler}
+              />
+            </Grid>
 
-          <Grid item xs={8}>
-            <Item>xs=8</Item>
+            <Grid item xs={6}>
+              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <InputLabel id="demo-select-small-label">Gender</InputLabel>
+                <Select
+                  labelId="demo-select-small-label"
+                  id="demo-select-small"
+                  value={gender}
+                  label="Gender"
+                  onChange={genderHandler}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={10}>Woman</MenuItem>
+                  <MenuItem value={20}>Man</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
           </Grid>
-        </Grid>
-      </Box>
-    </form>
-    </Paper>
+        </Box>
+      </form>
+    </div>
   );
 }
 export default App;
