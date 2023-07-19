@@ -22,6 +22,9 @@ function App() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [error, setError] = useState("");
   const [gender, setGender] = React.useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorPassword, setPasswordError] = useState("");
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -71,6 +74,34 @@ function App() {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordError("");
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setPasswordError("");
+  };
+
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError("Password is required.");
+    } else if (password.length < 10) {
+      setPasswordError("Password must be at least 10 characters long.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const validateConfirmPassword = () => {
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords do not match.");
+    } else {
+      setPasswordError("");
+    }
   };
 
   return (
@@ -202,6 +233,47 @@ function App() {
                 {error && <div className="error-message">{error}</div>}
               </div>
             </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                label="Office"
+                size="small"
+                fullWidth
+                variant="outlined"
+                inputProps={{ maxLength: 5 }}
+                {...register("ofis", {
+                  maxLength: {
+                    value: 50,
+                  },
+                })}
+                error={!!errors.soyad}
+                helperText={errors.soyad?.message}
+              ></TextField>
+            </Grid>
+
+            <Grid item xs={10}>
+              <label htmlFor="passwordInput">Password</label>
+              <input
+                type="password"
+                id="passwordInput"
+                value={password}
+                onChange={handlePasswordChange}
+                onBlur={validatePassword} // Run validation when the input loses focus
+              />
+
+              <label htmlFor="confirmPasswordInput">Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPasswordInput"
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                onBlur={validateConfirmPassword} // Run validation when the input loses focus
+              />
+              {errorPassword && <div className="error-message">{errorPassword}</div>}
+          
+            </Grid>
+
+            
           </Grid>
         </Box>
       </form>
@@ -229,16 +301,16 @@ formlarda validasyonlar
 
   *PersonelAd : String (zorunlu)
   *PersonelSoyad : String (z)
-  DogumTarih: Date (z)
+  *DogumTarih: Date (z)
   *Cinsiyet : String, select (z)
   AsilPersonelMi : bool (z)
   Email : email ?
   *ProjeAd : String ?
-  CalistigiOfis : String ?
+  *CalistigiOfis : String ?
   *Unvan: String ?
   *Telefon :  +90 (555) 444 33 22 (z)
-  Sifre : password hidden (z)
-  SifreTekrar: password hidden (z)
+  *Sifre : password hidden (z)
+  *SifreTekrar: password hidden (z)
 
 
   Kaydet 
