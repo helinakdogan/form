@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -10,12 +11,17 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { useForm } from "react-hook-form";
 import InputMask from "react-input-mask";
+import DatePicker from "react-datepicker";
 import { MuiTelInput } from "mui-tel-input";
 import "./App.css";
 import { Container } from "@mui/material";
+import { FaCalendarAlt } from "react-icons/fa";
 
 function App() {
-  const [phoneNumber, setPhoneNumber] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [error, setError] = useState("");
+  const [gender, setGender] = React.useState("");
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,7 +30,6 @@ function App() {
     textAlign: "center",
     color: theme.palette.text.secondary,
   }));
-  const [gender, setGender] = React.useState("");
 
   const {
     register,
@@ -48,12 +53,24 @@ function App() {
     },
   };
 
+  const validateDatePicker = () => {
+    if (!selectedDate) {
+      setError("Please select your birthday.");
+    } else {
+      setError("");
+    }
+  };
+
   const genderHandler = (event) => {
     setGender(event.target.value);
   };
 
   const phoneHandler = (newValue) => {
     setPhoneNumber(newValue);
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
   };
 
   return (
@@ -95,8 +112,6 @@ function App() {
               ></TextField>
             </Grid>
 
-            
-
             <Grid item xs={6}>
               <MuiTelInput
                 label="Phone Number"
@@ -133,6 +148,60 @@ function App() {
               </FormControl>
             </Grid>
 
+            <Grid item xs={6}>
+              <TextField
+                label="Project Name"
+                size="small"
+                fullWidth
+                variant="outlined"
+                inputProps={{ maxLength: 5 }}
+                {...register("proje", {
+                  maxLength: {
+                    value: 50,
+                  },
+                })}
+                error={!!errors.soyad}
+                helperText={errors.soyad?.message}
+              ></TextField>
+            </Grid>
+
+            <Grid item xs={6}>
+              <TextField
+                label="Title"
+                size="small"
+                fullWidth
+                variant="outlined"
+                inputProps={{ maxLength: 5 }}
+                {...register("ünvan", {
+                  maxLength: {
+                    value: 50,
+                  },
+                })}
+                error={!!errors.soyad}
+                helperText={errors.soyad?.message}
+              ></TextField>
+            </Grid>
+
+            <Grid item xs={6}>
+              <div className="birthday-picker-container">
+                <div className="birthday-picker-wrapper">
+                  <DatePicker
+                    selected={selectedDate}
+                    onChange={handleDateChange}
+                    onBlur={validateDatePicker} // Run validation when the date picker loses focus
+                    peekNextMonth
+                    showMonthDropdown
+                    showYearDropdown
+                    placeholderText="Birthday"
+                    dropdownMode="select"
+                    dateFormat="dd/MM/yyyy"
+                    maxDate={new Date()} // Prevent future dates from being selectable
+                  />
+                  <FaCalendarAlt className="birthday-picker-icon" />
+                </div>
+                {error && <div className="error-message">{error}</div>}
+              </div>
+            </Grid>
           </Grid>
         </Box>
       </form>
@@ -158,16 +227,16 @@ formlarda validasyonlar
 
  formda istediğimiz bilgiler: 
 
-  PersonelAd : String (zorunlu)
-  PersonelSoyad : String (z)
+  *PersonelAd : String (zorunlu)
+  *PersonelSoyad : String (z)
   DogumTarih: Date (z)
-  Cinsiyet : String, select (z)
+  *Cinsiyet : String, select (z)
   AsilPersonelMi : bool (z)
   Email : email ?
-  ProjeAd : String ?
+  *ProjeAd : String ?
   CalistigiOfis : String ?
-  Unvan: String ?
-  Telefon :  +90 (555) 444 33 22 (z)
+  *Unvan: String ?
+  *Telefon :  +90 (555) 444 33 22 (z)
   Sifre : password hidden (z)
   SifreTekrar: password hidden (z)
 
