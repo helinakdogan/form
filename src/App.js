@@ -32,76 +32,85 @@ function App() {
   } = useForm();
 
   return (
-    <div elevation={3} className="paper">
-      <form onSubmit={handleSubmit(handleOnSubmit)}>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                label="firstname"
-                size="small"
-                fullWidth
-                variant="outlined"
-                inputProps={{ maxLength: 50 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                {...register("firstname", {
-                  required: true,
-                  validate: (value) => {
-                    if (!value) {
-                      return "Bu alan zorunludur.";
-                    }
-                    return true;
-                  },
-                })}
-                error={!!errors.firstname}
-                helperText={errors.firstname?.message}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="surname"
-                size="small"
-                fullWidth
-                variant="outlined"
-                inputProps={{ maxLength: 50 }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                {...register("surname", {
-                  required: true,
-                  validate: (value) => {
-                    if (!value) {
-                      return "Bu alan zorunludur.";
-                    }
-                    return true;
-                  },
-                })}
-                error={!!errors.surname}
-                helperText={errors.surname?.message}
-              />
-            </Grid>
-
-            <Grid item xs={6}>
-              <InputMask
-                mask="+90 999 999 99 99"
-                defaultValue="+90 "
-                id="phoneNumber"
-                name="phoneNumber"
-                
-                {...register("phoneNumber", {
-                  required: true,
-                  validate: (value) => {                    
-                    if (value.length === 17) {
-                      return "";
-                    } else return "invalid";
-                  },
-                })}
-              />
+    <div className="bg">
+      <div elevation={3} className="paper">
+        <form onSubmit={handleSubmit(handleOnSubmit)}>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+              {/* firstname */}
+              <Grid item xs={6}>
+                <TextField
+                  label="firstname"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("firstname", {
+                    required: true,
+                    validate: (value) => {
+                      if (!value) {
+                        return "Bu alan zorunludur.";
+                      }
+                      return true;
+                    },
+                  })}
+                  error={!!errors.firstname}
+                  helperText={errors.firstname?.message}
+                />
               </Grid>
 
-              {/*{<MuiPhoneNumber
+              {/* surname */}
+              <Grid item xs={6}>
+                <TextField
+                  label="surname"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("surname", {
+                    required: true,
+                    validate: (value) => {
+                      if (!value) {
+                        return "Bu alan zorunludur.";
+                      }
+                      return true;
+                    },
+                  })}
+                  error={!!errors.surname}
+                  helperText={errors.surname?.message}
+                />
+              </Grid>
+
+              {/* phone number */}
+              <Grid item xs={6}>
+                <InputMask
+                  label="phoneNumber"
+                  mask="+90 999 999 99 99"
+                  defaultValue="+90 "
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("phoneNumber", {
+                    required: true,
+                    validate: (value) => {
+                      if (value.length === 17) {
+                        return "";
+                      } else return "invalid";
+                    },
+                  })}
+                />
+              </Grid>
+
+              {/*
+              {<MuiPhoneNumber
                 name="phone"
                 value={phone}
                 label="phoneNumber"
@@ -128,29 +137,39 @@ function App() {
                 error={!!errors.phoneNumber}
                 helperText={errors.phoneNumber?.message}
               />*/}
-            
-            {/*
-            <Grid item xs={6}>
-              <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-                <InputLabel id="demo-select-small-label">Gender</InputLabel>
-                <Select
-                  label="gender"
-                  labelId="demo-select-small-label"
-                  id="demo-select-small"
-                  value={selectedGender}
-                  //onBlur={validateGender}
-                  //onChange={handleGender}
-                  error={!!genderError}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={0}>Woman</MenuItem>
-                  <MenuItem value={1}>Man</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
 
+              <Grid item xs={6}>
+                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                  <InputLabel id="demo-select-small-label">Gender</InputLabel>
+                  <Select
+                    label="gender"
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    {...register("gender", {
+                      required: true,
+                      validate: (value) => {
+                        if (value == null || value == undefined) {
+                          return "Bu alan zorunludur.";
+                        }
+                        return true;
+                      },
+                    })}
+                    error={!!errors.gender}
+                    helperText={errors.gender?.message}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={0}>Woman</MenuItem>
+                    <MenuItem value={1}>Man</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              {/*
             <Grid item xs={6}>
               <div className="birthday-picker-container">
                 <div className="birthday-picker-wrapper">
@@ -186,87 +205,157 @@ function App() {
               </div>
             </Grid>
             {console.log("render oldu")}
-            <Grid item xs={10}>
-              <TextField
-                label="password"
-                type="password"
-                placeholder="Password"
-                id="passwordInput"
-                value={password}
-                //onChange={handlePasswordChange}
-                //onBlur={validatePassword} // Run validation when the input loses focus
-              />
-              <TextField
-                label="confirmPassword"
-                type="password"
-                placeholder="Confirm Password"
-                id="confirmPassword"
-                value={confirmPassword}
-                //onChange={handleConfirmPasswordChange}
-                //onBlur={validateConfirmPassword} // Run validation when the input loses focus
-              />
-              {errorPassword && (
-                <div className="error-message">{errorPassword}</div>
-              )}
-            </Grid>
+            */}
 
-            <Grid item xs={6}>
-              <TextField
-                label="projectName"
-                size="small"
-                fullWidth
-                variant="outlined"
-                inputProps={{ maxLength: 5 }}
-                {...register("projectName", {
-                  maxLength: {
-                    value: 50,
-                  },
-                })}
-                error={!!errors.soyad}
-                helperText={errors.soyad?.message}
-              ></TextField>
-            </Grid>
+              {/* password */}
+              <Grid item xs={10}>
+                <TextField
+                  label="password"
+                  type="password"
+                  id="password"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("password", {
+                    required: true,
+                    validate: (value) => {
+                      if (value===null || value.length < 10 ) {
+                        return "en az 10 karakter";
+                      } if(getValues("confirmPassword")!==null 
+                          && getValues("confirmPassword")!==undefined 
+                          && getValues("confirmPassword")!=value){
+                        return "adam gibi gir";
+                      }
+                      return true;
+                    },
+                  })}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                />
+                <TextField
+                  label="confirmPassword"
+                  type="password"
+                  id="confirmPassword"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("confirmPassword", {
+                    required: true,
+                    validate: (value) => {
+                      if (value===null || value.length < 10 ) {
+                        return "en az 10 karakter";
+                      } if(getValues("password")!==null 
+                          && getValues("password")!==undefined 
+                          && getValues("password")!=value){
+                        return "adam gibi gir";
+                      }
+                      return true;
+                    },
+                  })}
+                  error={!!errors.confirmPassword}
+                  helperText={errors.confirmPassword?.message}
+                />
+              </Grid>
 
-            <Grid item xs={6}>
-              <TextField
-                label="title"
-                size="small"
-                fullWidth
-                variant="outlined"
-                inputProps={{ maxLength: 5 }}
-                {...register("title", {
-                  maxLength: {
-                    value: 50,
-                  },
-                })}
-                error={!!errors.title}
-                helperText={errors.title?.message}
-              ></TextField>
-            </Grid>
+              {/*
+             const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setPasswordError("");
+  };
 
-            <Grid item xs={6}>
-              <TextField
-                label="office"
-                size="small"
-                fullWidth
-                variant="outlined"
-                inputProps={{ maxLength: 5 }}
-                {...register("office", {
-                  maxLength: {
-                    value: 50,
-                  },
-                })}
-                error={!!errors.office}
-                helperText={errors.office?.message}
-              ></TextField>
-            </Grid> */}
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setPasswordError("");
+  };
 
-            <Grid item xs={12}>
-              <Button type="submit">submit</Button>
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError("Password is required.");
+    } else if (password.length < 10) {
+      setPasswordError("Password must be at least 10 characters long.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const validateConfirmPassword = () => {
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords do not match.");
+    } else {
+      setPasswordError("");
+    }
+  }; */}
+
+              {/* projectName */}
+              <Grid item xs={6}>
+                <TextField
+                  label="projectName"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("projectName", {
+                    maxLength: {
+                      value: 50,
+                    },
+                  })}
+                  error={!!errors.soyad}
+                  helperText={errors.soyad?.message}
+                ></TextField>
+              </Grid>
+
+              {/* title */}
+              <Grid item xs={6}>
+                <TextField
+                  label="title"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("title", {
+                    maxLength: {
+                      value: 50,
+                    },
+                  })}
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
+                ></TextField>
+              </Grid>
+
+              {/* office */}
+              <Grid item xs={6}>
+                <TextField
+                  label="office"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("office", {
+                    maxLength: {
+                      value: 50,
+                    },
+                  })}
+                  error={!!errors.office}
+                  helperText={errors.office?.message}
+                ></TextField>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button type="submit">submit</Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </Box>
-      </form>
+          </Box>
+        </form>
+      </div>
     </div>
   );
 }

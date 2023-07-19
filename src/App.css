@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  align-items: center; 
+  background-color: yellow;
+  justify-content: center;
 }
 
 .text-danger{
@@ -8,15 +11,15 @@
 }
 
 .paper{
-  margin-top: 250px;
-  margin-bottom: 250px;
+  margin-top: 100px;
+  margin-bottom: 200px;
   margin-left: 10px;
   margin-right: 10px;
   padding: 30px;
   background-image: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%);
   box-shadow: 0 6px 10px rgba(0,0,0,.3);
   border-radius: 15px;
-  width: 90%;
+  width: 50%;
   height: 90%;
   text-align: center;
   justify-content: center; 
@@ -87,4 +90,8 @@
   color: #ff0000;
   font-size: 14px;
   margin-top: 5px;
+}
+
+.bg{
+  //background-color: yellow;
 }
