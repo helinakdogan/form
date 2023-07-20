@@ -16,7 +16,7 @@ import DatePicker from "react-datepicker";
 import "./App.css";
 import { FaCalendarAlt } from "react-icons/fa";
 import MuiPhoneNumber from "mui-phone-number";
-import { Button } from "@mui/material";
+import { Button, Radio, RadioGroup, FormLabel } from "@mui/material";
 import InputMask from "react-input-mask";
 
 function App() {
@@ -24,8 +24,6 @@ function App() {
     debugger;
     console.log(values);
   };
-
-  const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
   const {
     register,
@@ -41,8 +39,8 @@ function App() {
       <div elevation={3} className="paper">
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              {/* firstname DONE */}
+            <Grid container spacing={3}>
+              {/* firstname */}
               <Grid item xs={6}>
                 <TextField
                   label="firstname"
@@ -67,7 +65,7 @@ function App() {
                 />
               </Grid>
 
-              {/* surname DONE */}
+              {/* surname */}
               <Grid item xs={6}>
                 <TextField
                   label="surname"
@@ -92,63 +90,8 @@ function App() {
                 />
               </Grid>
 
-              {/* phone number */}
-              <Grid item xs={6}>
-                <InputMask
-                  label="phoneNumber"
-                  mask="+90 999 999 99 99"
-                  defaultValue="+90 "
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("phoneNumber", {
-                    required: "Phone number is required",
-                    pattern: {
-                      value: /\d{3}-\d{3}-\d{4}/,
-                      message:
-                        "Invalid phone number format (e.g., 123-456-7890)",
-                    },
-                  })}
-                  error={!!errors.surname}
-                  helperText={errors.surname?.message}
-                >
-                  {(inputProps) => <input type="text" {...inputProps} />}
-                </InputMask>
-              </Grid>
-
-              {/*
-              {<MuiPhoneNumber
-                name="phone"
-                value={phone}
-                label="phoneNumber"
-                defaultCountry={"tr"}
-                countryCodeEditable={false}
-                
-                onChange={(e) => {
-                  debugger;
-                  if (!e || e.length > 17) {
-                    return;
-                  } else {
-                    setValue("phoneNumber", e);
-                  }
-                }}
-                // {...register("phoneNumber", {
-                //   required: "Bu alan zorunludur.",
-                //   validate: (value) => {
-                //     if (!value || value.length > 17) {
-                //       return "Lütfen geçerli bir telefon numarası girin.";
-                //     }
-                //     return true;
-                //   },
-                // })}
-                error={!!errors.phoneNumber}
-                helperText={errors.phoneNumber?.message}
-              />*/}
-
-              {/* gender DONE */}
-              <Grid item xs={6}>
+              {/* gender */}
+              <Grid item xs={4}>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                   <InputLabel id="demo-select-small-label">Gender</InputLabel>
                   <Select
@@ -179,16 +122,88 @@ function App() {
                 </FormControl>
               </Grid>
 
-              <Grid sx={8}>
-                <FormControlLabel
-                  required
-                  control={<Checkbox />}
-                  label="isPersonal"
-                  color="secondary"
-                />
+              {/* isPersonal ? */}
+              <Grid sx={4}>
+                <FormControl>
+                  <FormLabel id="demo-radio-buttons-group-label">
+                    isPersonal
+                  </FormLabel>
+                  <RadioGroup
+                    defaultValue=""
+                    name="radio-buttons-group"
+                    label="isPersonal"
+                    {...register("surname", {
+                      required: true,
+                      validate: (value) => {
+                        if (!value) {
+                          return "Bu alan zorunludur.";
+                        }
+                        return true;
+                      },
+                    })}
+                  >
+                    <FormControlLabel
+                      value="yes"
+                      control={<Radio />}
+                      label="yes"
+                    />
+                    <FormControlLabel
+                      value="no"
+                      control={<Radio />}
+                      label="no"
+                    />
+                  </RadioGroup>
+                </FormControl>
               </Grid>
 
-              {/* birthday */}
+              {/* phone number ? */}
+              <Grid item xs={4}>
+                <InputMask
+                  label="phoneNumber"
+                  mask="+90 999 999 99 99"
+                  defaultValue="+90 "
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("phoneNumber", {
+                    required: "Phone number is required",
+                    pattern: {
+                      value: /\d{3}-\d{3}-\d{4}/,
+                      message:
+                        "Invalid phone number format (e.g., 123-456-7890)",
+                    },
+                  })}
+                  error={!!errors.surname}
+                  helperText={errors.surname?.message}
+                >
+                  {(inputProps) => <input type="text" {...inputProps} />}
+                </InputMask>
+              </Grid>
+
+              {/* email */}
+              <Grid item sx={6}>
+                <div className="email-input-container">
+                  <TextField
+                    label="email"
+                    type="email"
+                    id="emailInput"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                </div>
+              </Grid>
+
+              {/* birthday ? */}
               <Grid item xs={6}>
                 <div className="birthday-picker-container">
                   <div
@@ -220,60 +235,71 @@ function App() {
                 </div>
               </Grid>
 
-              {/* email DONE*/}
-              <Grid item sx={12}>
-                <div className="email-input-container">
-                  <TextField
-                    label="email"
-                    type="email"
-                    id="emailInput"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    {...register("email", {
-                      required: "Email is required",
-                      pattern: {
-                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                        message: "Invalid email address",
-                      },
-                    })}
-                  />
-                </div>
-              </Grid>
-
-              {/*
-              
-
-            <DatePicker
-                      label="birthday"
-                      //selected={selectedDate}
-                      peekNextMonth
-                      showMonthDropdown
-                      showYearDropdown
-                      //laceholderText="Birthday"
-                      inputProps={{ maxLength: 50 }}
+              {/* projectName */}
+              <Grid item xs={12}>
+                <TextField
+                  label="projectName"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
                   InputLabelProps={{
                     shrink: true,
                   }}
-                  {...register("surname", {
-                    required: true,
-                    validate: (value) => {
-                      if (!value) {
-                        return "Bu alan zorunludur.";
-                      }
-                      return true;
+                  {...register("projectName", {
+                    maxLength: {
+                      value: 50,
                     },
                   })}
-                      dropdownMode="select"
-                      dateFormat="dd/MM/yyyy"
-                      maxDate={new Date()} // Prevent future dates from being selectable
-                      error={!!errors.birthday}
-                      helperText={errors.birthday?.message}
-                    />
-            */}
+                  error={!!errors.soyad}
+                  helperText={errors.soyad?.message}
+                ></TextField>
+              </Grid>
 
-              {/* password DONE */}
-              <Grid item xs={10}>
+              {/* title */}
+              <Grid item xs={6}>
+                <TextField
+                  label="title"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("title", {
+                    maxLength: {
+                      value: 50,
+                    },
+                  })}
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
+                ></TextField>
+              </Grid>
+
+              {/* office */}
+              <Grid item xs={6}>
+                <TextField
+                  label="office"
+                  size="small"
+                  fullWidth
+                  variant="outlined"
+                  inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("office", {
+                    maxLength: {
+                      value: 50,
+                    },
+                  })}
+                  error={!!errors.office}
+                  helperText={errors.office?.message}
+                ></TextField>
+              </Grid>
+
+              {/* password */}
+              <Grid item xs={12}>
                 <TextField
                   label="password"
                   type="password"
@@ -328,69 +354,6 @@ function App() {
                 />
               </Grid>
 
-              {/* projectName DONE*/}
-              <Grid item xs={6}>
-                <TextField
-                  label="projectName"
-                  size="small"
-                  fullWidth
-                  variant="outlined"
-                  inputProps={{ maxLength: 50 }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("projectName", {
-                    maxLength: {
-                      value: 50,
-                    },
-                  })}
-                  error={!!errors.soyad}
-                  helperText={errors.soyad?.message}
-                ></TextField>
-              </Grid>
-
-              {/* title DONE */}
-              <Grid item xs={6}>
-                <TextField
-                  label="title"
-                  size="small"
-                  fullWidth
-                  variant="outlined"
-                  inputProps={{ maxLength: 50 }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("title", {
-                    maxLength: {
-                      value: 50,
-                    },
-                  })}
-                  error={!!errors.title}
-                  helperText={errors.title?.message}
-                ></TextField>
-              </Grid>
-
-              {/* office DONE */}
-              <Grid item xs={6}>
-                <TextField
-                  label="office"
-                  size="small"
-                  fullWidth
-                  variant="outlined"
-                  inputProps={{ maxLength: 50 }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  {...register("office", {
-                    maxLength: {
-                      value: 50,
-                    },
-                  })}
-                  error={!!errors.office}
-                  helperText={errors.office?.message}
-                ></TextField>
-              </Grid>
-
               <Grid item xs={12}>
                 <Button type="submit">submit</Button>
               </Grid>
@@ -438,14 +401,3 @@ formlarda validasyonlar
   Kaydet 
   
   */
-
-/*
-  <TextField
-                label="First Name"
-                value={firstname}
-                onChange={handleFirstnameChange}
-                onBlur={validateFirstName} // Run validation when the input loses focus
-                error={!!firstnameError}
-                helperText={firstnameError}
-                required
-              /> */
