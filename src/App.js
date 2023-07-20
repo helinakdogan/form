@@ -9,7 +9,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import { useForm } from "react-hook-form";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { useForm, Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import "./App.css";
 import { FaCalendarAlt } from "react-icons/fa";
@@ -23,8 +25,11 @@ function App() {
     console.log(values);
   };
 
+  const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
   const {
     register,
+    control,
     getValues,
     setValue,
     handleSubmit,
@@ -37,7 +42,7 @@ function App() {
         <form onSubmit={handleSubmit(handleOnSubmit)}>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              {/* firstname */}
+              {/* firstname DONE */}
               <Grid item xs={6}>
                 <TextField
                   label="firstname"
@@ -62,7 +67,7 @@ function App() {
                 />
               </Grid>
 
-              {/* surname */}
+              {/* surname DONE */}
               <Grid item xs={6}>
                 <TextField
                   label="surname"
@@ -99,14 +104,18 @@ function App() {
                     shrink: true,
                   }}
                   {...register("phoneNumber", {
-                    required: true,
-                    validate: (value) => {
-                      if (value.length === 17) {
-                        return "";
-                      } else return "invalid";
+                    required: "Phone number is required",
+                    pattern: {
+                      value: /\d{3}-\d{3}-\d{4}/,
+                      message:
+                        "Invalid phone number format (e.g., 123-456-7890)",
                     },
                   })}
-                />
+                  error={!!errors.surname}
+                  helperText={errors.surname?.message}
+                >
+                  {(inputProps) => <input type="text" {...inputProps} />}
+                </InputMask>
               </Grid>
 
               {/*
@@ -138,6 +147,7 @@ function App() {
                 helperText={errors.phoneNumber?.message}
               />*/}
 
+              {/* gender DONE */}
               <Grid item xs={6}>
                 <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
                   <InputLabel id="demo-select-small-label">Gender</InputLabel>
@@ -169,45 +179,100 @@ function App() {
                 </FormControl>
               </Grid>
 
-              {/*
-            <Grid item xs={6}>
-              <div className="birthday-picker-container">
-                <div className="birthday-picker-wrapper">
-                  <DatePicker
-                    label="birthday"
-                    selected={selectedDate}
-                    //onChange={handleDateChange}
-                    //onBlur={validateDatePicker} // Run validation when the date picker loses focus
-                    peekNextMonth
-                    showMonthDropdown
-                    showYearDropdown
-                    placeholderText="Birthday"
-                    dropdownMode="select"
-                    dateFormat="dd/MM/yyyy"
-                    maxDate={new Date()} // Prevent future dates from being selectable
-                  />
-                  <FaCalendarAlt className="birthday-picker-icon" />
-                </div>
-                {error && <div className="error-message">{error}</div>}
-              </div>
-            </Grid>
-
-            <Grid item sx={12}>
-              <div className="email-input-container">
-                <TextField
-                  label="email"
-                  type="email"
-                  placeholder="Email"
-                  id="emailInput"
+              <Grid sx={8}>
+                <FormControlLabel
+                  required
+                  control={<Checkbox />}
+                  label="isPersonal"
+                  color="secondary"
                 />
-                emailError={!!errors.email}
-                emailHelperText={errors.email?.message}
-              </div>
-            </Grid>
-            {console.log("render oldu")}
+              </Grid>
+
+              {/* birthday */}
+              <Grid item xs={6}>
+                <div className="birthday-picker-container">
+                  <div
+                    className={`birthday-picker-wrapper ${
+                      errors.birthday ? "input-error" : ""
+                    }`}
+                  >
+                    <DatePicker
+                      label="birthday"
+                      selected={null}
+                      id="birthday"
+                      placeholderText="birthday"
+                      name="birthday"
+                      dateFormat="dd/MM/yyyy"
+                      {...register("birthday", {
+                        required: true,
+                        validate: (value) => {
+                          if (!value) {
+                            return "Bu alan zorunludur.";
+                          }
+                          return true;
+                        },
+                      })}
+                      error={!!errors.birthday}
+                      helperText={errors.birthday?.message}
+                    />
+                    <FaCalendarAlt className="birthday-picker-icon" />{" "}
+                  </div>
+                </div>
+              </Grid>
+
+              {/* email DONE*/}
+              <Grid item sx={12}>
+                <div className="email-input-container">
+                  <TextField
+                    label="email"
+                    type="email"
+                    id="emailInput"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    {...register("email", {
+                      required: "Email is required",
+                      pattern: {
+                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                        message: "Invalid email address",
+                      },
+                    })}
+                  />
+                </div>
+              </Grid>
+
+              {/*
+              
+
+            <DatePicker
+                      label="birthday"
+                      //selected={selectedDate}
+                      peekNextMonth
+                      showMonthDropdown
+                      showYearDropdown
+                      //laceholderText="Birthday"
+                      inputProps={{ maxLength: 50 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  {...register("surname", {
+                    required: true,
+                    validate: (value) => {
+                      if (!value) {
+                        return "Bu alan zorunludur.";
+                      }
+                      return true;
+                    },
+                  })}
+                      dropdownMode="select"
+                      dateFormat="dd/MM/yyyy"
+                      maxDate={new Date()} // Prevent future dates from being selectable
+                      error={!!errors.birthday}
+                      helperText={errors.birthday?.message}
+                    />
             */}
 
-              {/* password */}
+              {/* password DONE */}
               <Grid item xs={10}>
                 <TextField
                   label="password"
@@ -219,11 +284,14 @@ function App() {
                   {...register("password", {
                     required: true,
                     validate: (value) => {
-                      if (value===null || value.length < 10 ) {
+                      if (value === null || value.length < 10) {
                         return "en az 10 karakter";
-                      } if(getValues("confirmPassword")!==null 
-                          && getValues("confirmPassword")!==undefined 
-                          && getValues("confirmPassword")!=value){
+                      }
+                      if (
+                        getValues("confirmPassword") !== null &&
+                        getValues("confirmPassword") !== undefined &&
+                        getValues("confirmPassword") != value
+                      ) {
                         return "adam gibi gir";
                       }
                       return true;
@@ -242,11 +310,14 @@ function App() {
                   {...register("confirmPassword", {
                     required: true,
                     validate: (value) => {
-                      if (value===null || value.length < 10 ) {
+                      if (value === null || value.length < 10) {
                         return "en az 10 karakter";
-                      } if(getValues("password")!==null 
-                          && getValues("password")!==undefined 
-                          && getValues("password")!=value){
+                      }
+                      if (
+                        getValues("password") !== null &&
+                        getValues("password") !== undefined &&
+                        getValues("password") != value
+                      ) {
                         return "adam gibi gir";
                       }
                       return true;
@@ -257,36 +328,7 @@ function App() {
                 />
               </Grid>
 
-              {/*
-             const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setPasswordError("");
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
-    setPasswordError("");
-  };
-
-  const validatePassword = () => {
-    if (!password) {
-      setPasswordError("Password is required.");
-    } else if (password.length < 10) {
-      setPasswordError("Password must be at least 10 characters long.");
-    } else {
-      setPasswordError("");
-    }
-  };
-
-  const validateConfirmPassword = () => {
-    if (password !== confirmPassword) {
-      setPasswordError("Passwords do not match.");
-    } else {
-      setPasswordError("");
-    }
-  }; */}
-
-              {/* projectName */}
+              {/* projectName DONE*/}
               <Grid item xs={6}>
                 <TextField
                   label="projectName"
@@ -307,7 +349,7 @@ function App() {
                 ></TextField>
               </Grid>
 
-              {/* title */}
+              {/* title DONE */}
               <Grid item xs={6}>
                 <TextField
                   label="title"
@@ -328,7 +370,7 @@ function App() {
                 ></TextField>
               </Grid>
 
-              {/* office */}
+              {/* office DONE */}
               <Grid item xs={6}>
                 <TextField
                   label="office"

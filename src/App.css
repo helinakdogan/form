@@ -44,6 +44,12 @@
 
 .birthday-picker-wrapper {
   position: relative;
+  
+}
+
+.input-error {
+  border: 1px solid red;
+  padding: 2px;
 }
 
 /* Styling for the date picker input */
@@ -95,3 +101,4 @@
 .bg{
   //background-color: yellow;
 }
+
